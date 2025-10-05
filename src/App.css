@@ -1,42 +1,531 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+@import url('https://fonts.googleapis.com/css2?family=Cookie&family=Quicksand:wght@300..700&display=swap');
+
+
+/* ---------- GitHub-ish theme variables ---------- */
+/* Put these at the top of your CSS, replacing your current :root / .theme-* blocks */
+
+:root {
+  /* MAIN / ACCENT (kept subtle — GitHub uses blue accents) */
+  --main-light: #f1f8ff;
+  /* subtle blue-ish surface (light) */
+  --main-default: #0969da;
+  /* GitHub blue - primary interactive accent (light) */
+  --main-dark: #0550a6;
+  /* darker blue for hover/borders */
+  --main-muted: #58a6ff;
+  /* lighter accent for highlights */
+
+  /* NEUTRALS - Light theme defaults */
+  --neutral-white: #ffffff;
+  /* page background */
+  --neutral-100: #f6f8fa;
+  /* surfaces / paper (GitHub: subtle gray) */
+  --neutral-200: #e1e4e8;
+  /* borders / lines */
+  --neutral-600: #6e7781;
+  /* muted text */
+  --neutral-900: #24292f;
+  /* primary text */
+  --neutral-1200: #1f2933;
+  /* deep accents */
+
+  /* hero / gradients (light) */
+  --color-hero-bg: linear-gradient(to bottom, #ffffff, #f6f8fa);
+  --gradient-hero: linear-gradient(135deg, var(--main-default), var(--main-dark));
+
+  /* Shadows (subtle for light) */
+  --shadow-luxury: 0 8px 30px rgba(16, 24, 40, 0.06);
+  --shadow-card: 0 2px 8px rgba(16, 24, 40, 0.06);
+
+  --transition-smooth: all 0.3s ease;
+  --radius: 8px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* explicit light class (optional — useful if you add/remove both classes) */
+.theme-light {
+  /* re-assert light defaults */
+  --main-light: #f1f8ff;
+  --main-default: #0969da;
+  --main-dark: #0550a6;
+  --main-muted: #58a6ff;
+
+  --neutral-white: #ffffff;
+  --neutral-100: #f6f8fa;
+  --neutral-200: #e1e4e8;
+  --neutral-600: #6e7781;
+  --neutral-900: #24292f;
+  --neutral-1200: #1f2933;
+
+  --color-hero-bg: linear-gradient(to bottom, #ffffff, #f6f8fa);
+  --gradient-hero: linear-gradient(135deg, var(--main-default), var(--main-dark));
+
+  --shadow-luxury: 0 8px 30px rgba(16, 24, 40, 0.06);
+  --shadow-card: 0 2px 8px rgba(16, 24, 40, 0.06);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+/* GitHub-like dark theme */
+.theme-dark {
+  /* main / accents for dark (GitHub dark blue + light accents) */
+  --main-light: #0d1117;
+  /* dark surface base */
+  --main-default: #58a6ff;
+  /* GitHub dark primary (soft blue) */
+  --main-dark: #2384ff;
+  /* stronger blue for emphasis in dark */
+  --main-muted: #8b949e;
+  /* muted accent */
+
+  /* neutrals for dark */
+  --neutral-white: #0d1117;
+  /* page background in dark */
+  --neutral-100: #161b22;
+  /* surface / cards */
+  --neutral-200: #21262d;
+  /* borders / lines */
+  --neutral-600: #8b949e;
+  /* muted text */
+  --neutral-900: #c9d1d9;
+  /* primary text (light) */
+  --neutral-1200: #ffffff;
+  /* tertiary / less prominent */
+
+  /* hero / gradients for dark */
+  --color-hero-bg: linear-gradient(to bottom, #0b0f15, #12151b);
+  --gradient-hero: linear-gradient(135deg, #0f1724, #0b1220);
+
+  /* shadows for dark (subtle glow) */
+  --shadow-luxury: 0 8px 30px rgba(2, 6, 23, 0.6);
+  --shadow-card: 0 2px 8px rgba(2, 6, 23, 0.55);
+}
+
+/* small overrides so cards/inputs keep readable contrast in dark theme */
+.theme-dark .shadow-card,
+.theme-dark .flat-card {
+  background-color: var(--neutral-100) !important;
+  /* dark card bg */
+  color: var(--neutral-900);
+  box-shadow: var(--shadow-card) !important;
+}
+
+/* icons and navbar pick up the main accent in dark */
+.theme-dark .icon-responsive {
+  color: var(--main-default) !important;
+}
+
+.theme-dark .navbar-button {
+  color: var(--main-default) !important;
+}
+
+/* make sure body background uses the variable */
+body {
+  background-color: var(--neutral-white);
+  color: var(--neutral-900);
+}
+
+.theme-dark body {
+  background-color: var(--neutral-white);
+  color: var(--neutral-900);
+}
+
+/* Global reset */
+* {
+  box-sizing: border-box;
+  transition: var(--transition-smooth);
+  user-select: none !important;
+}
+
+body {
+  margin: 0;
+  background-color: var(--neutral-white) !important;
+  font-family: 'Quicksand', sans-serif;
+}
+
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo-link:focus,
+.logo-link:active {
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.clickable-card {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.clickable-card:focus {
+  outline: none;
+}
+
+/* Utilities */
+.bg-primary {
+  background-color: var(--main-default);
+  color: var(--neutral-white);
+}
+
+.bg-secondary {
+  background-color: var(--main-light);
+  color: var(--neutral-900);
+}
+
+.navbar-button {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--main-dark) !important;
+  padding: 0.5rem 0;
+  margin: 0 1rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.navbar-button:hover {
+  color: var(--neutral-600) !important;
+}
+
+@media (min-width: 768px) {
+  .navbar-button {
+    font-size: 1.25rem;
+    margin: 0 2.5rem;
   }
-  to {
-    transform: rotate(360deg);
+}
+
+/* Hero Subtitle */
+.hero-subtitle {
+  color: var(--neutral-900);
+  font-weight: bold !important;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 600px) {
+  .hero-subtitle {
+    font-size: 1rem;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
+@media (min-width: 900px) {
+  .hero-subtitle {
+    font-size: 1.125rem;
   }
 }
 
-.card {
-  padding: 2em;
+/* Hero Title */
+.hero-title {
+  color: var(--main-dark-muted);
+  font-weight: bold !important;
+  line-height: 1 !important;
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+  font-size: 2rem;
 }
 
-.read-the-docs {
-  color: #888;
+@media (min-width: 600px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+}
+
+/* Hero Description */
+.hero-description {
+  color: var(--neutral-900);
+  margin-bottom: 1.5rem !important;
+  opacity: 0.9;
+  max-width: 200px;
+  font-size: 1rem;
+}
+
+@media (min-width: 600px) {
+  .hero-description {
+    max-width: 500px;
+    font-size: 1.125rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .hero-description {
+    max-width: 900px;
+    font-size: 1.25rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hero-description {
+    max-width: 1900px;
+  }
+}
+
+/* in your CSS or App.css */
+.icon-responsive {
+  width: 28px;
+  height: 28px;
+  color: var(--main-dark);
+}
+
+@media (max-width: 900px) {
+  .icon-responsive {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Buttons - Bigger size and lighter hover for all */
+.btn,
+.primary-button,
+.primary-white-button,
+.secondary-button,
+.hollow-button,
+.white-hover-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1.125rem;
+  border-radius: var(--radius);
+  font-weight: 500;
+  text-transform: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* .primary-white-button */
+.primary-white-button {
+  background-color: transparent !important;
+  color: var(--neutral-white) !important;
+  border: 1px solid var(--neutral-white) !important;
+  box-shadow: none !important;
+}
+
+.primary-white-button:hover {
+  background-color: var(--main-dark) !important;
+  color: var(--neutral-white) !important;
+  border-color: var(--neutral-white) !important;
+}
+
+/* .primary-button */
+.primary-button {
+  background-color: var(--main-dark) !important;
+  color: var(--neutral-1200) !important;
+  border: 1px solid var(--main-dark) !important;
+  box-shadow: none !important;
+}
+
+.primary-button:hover {
+  background-color: var(--main-default) !important;
+  color: var(--neutral-white) !important;
+  border-color: var(--main-default) !important;
+}
+
+
+/* .secondary-button */
+.secondary-button {
+  background-color: var(--neutral-white) !important;
+  color: var(--neutral-1200) !important;
+  border: 1px solid var(--main-dark) !important;
+  box-shadow: none !important;
+}
+
+.secondary-button:hover {
+  background-color: var(--main-dark) !important;
+  color: var(--neutral-1200) !important;
+  border-color: var(--main-dark) !important;
+}
+
+/* .hollow-button */
+.hollow-button {
+  background-color: transparent !important;
+  color: var(--neutral-1200) !important;
+  border: 1px solid var(--neutral-1200) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.hollow-button:hover {
+  background-color: var(--neutral-white) !important;
+  color: var(--neutral-1200) !important;
+  border-color: var(--neutral-1200) !important;
+}
+
+/* .secondary-button */
+.white-hover-button {
+  background-color: transparent !important;
+  color: var(--main-default) !important;
+  border: 1px solid var(--main-dark) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
+}
+
+.white-hover-button:hover {
+  background-color: var(--neutral-white) !important;
+  color: var(--main-dark) !important;
+  font-weight: 600;
+  border-color: var(--main-dark) !important;
+}
+
+.shadow-luxury {
+  box-shadow: var(--shadow-luxury);
+}
+
+.shadow-card {
+  box-shadow: var(--shadow-card);
+}
+
+.brown-textfield label.Mui-focused {
+  color: #533d29;
+}
+
+.brown-textfield .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: #533d29;
+}
+
+.icon-circle {
+  width: 72px;
+  height: 72px;
+  background-color: var(--main-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.simple-email-input {
+  width: 50%;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--main-dark) !important;
+  border-radius: 0.5rem;
+  background-color: #fff;
+  color: var(--neutral-900);
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.simple-email-input::placeholder {
+  color: var(--main-default) !important;
+  opacity: 0.7 !important;
+}
+
+.simple-email-input.not-empty::placeholder {
+  opacity: 0 !important;
+}
+
+.simple-email-input:focus {
+  transform: scale(1.03) !important;
+}
+
+.filter-section-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  /* Remove blue tap/click highlight */
+  -webkit-tap-highlight-color: transparent;
+  /* Chrome, Safari, Edge */
+  outline: none;
+  user-select: none;
+}
+
+
+.section-title {
+  color: var(--main-default);
+}
+
+.icon-button {
+  color: var(--main-default);
+}
+
+.divider {
+  margin-bottom: 8px;
+  border-color: var(--main-dark);
+}
+
+.filter-content-box {
+  padding-left: 8px;
+  margin-bottom: 16px;
+  color: var(--main-default);
+}
+
+.border-gold-style .MuiOutlinedInput-root fieldset,
+.border-gold-style .MuiOutlinedInput-root:hover fieldset,
+.border-gold-style .MuiOutlinedInput-root.Mui-focused fieldset {
+  border-color: var(--main-dark);
+}
+
+.border-gold-style label.Mui-focused {
+  color: var(--main-dark);
+}
+
+.border-gold-style .MuiSelect-icon {
+  color: var(--main-dark);
+}
+
+.border-gold-style .MuiSelect-select,
+.border-gold-style {
+  color: var(--main-default);
+}
+
+.checkbox-style .MuiCheckbox-root,
+.checkbox-style .MuiCheckbox-root.Mui-checked {
+  color: var(--main-dark);
+}
+
+.checkbox-style .MuiFormControlLabel-label {
+  color: rgba(51, 39, 26, 0.75);
+}
+
+.price-text-field {
+  width: 100px;
+}
+
+.price-text-field input::-webkit-outer-spin-button,
+.price-text-field input::-webkit-inner-spin-button {
+  display: none;
+}
+
+.slider-style {
+  width: 100%;
+  color: var(--main-dark) !important;
+}
+
+.slider-style .MuiSlider-rail {
+  opacity: 0.3;
+  background-color: var(--main-dark);
+}
+
+.select-style .MuiOutlinedInput-notchedOutline {
+  border-width: 1px !important;
+  border-color: var(--main-dark);
+}
+
+.select-style:hover .MuiOutlinedInput-notchedOutline,
+.select-style.Mui-focused .MuiOutlinedInput-notchedOutline {
+  border-color: var(--main-dark);
+  border-width: 2px !important;
+}
+
+.shadow-card,
+.flat-card {
+  box-shadow: none !important;
+  border-radius: 0px !important;
+  border: none !important;
+  background-color: #f0f4f1;
 }
