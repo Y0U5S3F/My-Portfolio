@@ -1,7 +1,14 @@
+import GlossedUp from "./Projects/GlossedUp";
+import FlexGym from "./Projects/FlexGym";
+import ComputerVision from "./Projects/ComputerVision";
+import Jumpark from "./Projects/Jumpark";
 const Projects = () => {
   return (
-    <div style={{ padding: "100px 0", textAlign: "center" }}>
-      <h1>This is the Projects component</h1>
+    <div>
+      <GlossedUp />
+      <FlexGym />
+      <ComputerVision />
+      <Jumpark />
     </div>
   );
 };

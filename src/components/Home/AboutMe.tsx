@@ -6,9 +6,9 @@ const AboutMe = () => {
 
   return (
     <Box
-      id="about"
+      id="aboutme"
       sx={{
-        minHeight: "75vh",
+        minHeight: "70vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
