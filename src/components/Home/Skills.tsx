@@ -15,7 +15,6 @@ const Skills: React.FC = () => {
         px: { xs: 3, md: 10 },
         position: "relative",
         overflow: "hidden",
-        background: "var(--neutral-100)",
       }}
     >
       <section
@@ -51,8 +50,8 @@ const Skills: React.FC = () => {
             reliable, and maintainable solutions.
           </p>
 
-          <div style={{ marginTop: 36 }}>
-            <TechMarquee color="var(--neutral-1200)" speed={14} size={128} iconSize={75} gap={25} direction="left" />
+          <div style={{ marginTop: 128 }}>
+            <TechMarquee color="var(--neutral-1200)" speed={10} size={128} iconSize={85} gap={20} direction="left" />
           </div>
         </div>
       </section>

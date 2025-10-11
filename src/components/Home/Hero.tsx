@@ -12,7 +12,7 @@ const Hero: React.FC = () => {
         alignItems: "center",
         textAlign: "center",
         px: 3,
-        backgroundColor: "var(--neutral-100)",
+        backgroundColor: "transparent !important",
       }}
     >
       <Typography

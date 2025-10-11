@@ -15,7 +15,6 @@ const AboutMe = () => {
         px: { xs: 3, md: 10 },
         position: "relative",
         overflow: "hidden",
-        background: "var(--neutral-200)",
       }}
     >
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6 }}>
