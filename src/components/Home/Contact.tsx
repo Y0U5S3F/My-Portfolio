@@ -44,7 +44,7 @@ const Contact: React.FC = () => {
       whileInView={{ y: 0, opacity: 1 }}
       viewport={{ once: true, amount: 0.25 }}
       transition={{ duration: 0.6, ease: "circOut" }}
-      sx={{ py: { xs: 6, md: 12 }, px: { xs: 3, md: 10 }, background: "var(--neutral-100)" }}
+      sx={{ py: { xs: 6, md: 12 }, px: { xs: 3, md: 10 } }}
     >
       <Grid container spacing={4} justifyContent="center">
         <Grid item xs={12} md={8}>

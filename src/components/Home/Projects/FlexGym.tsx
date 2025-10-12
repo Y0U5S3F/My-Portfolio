@@ -13,17 +13,18 @@ const FlexGym: React.FC = () => {
     };
     const commonTransition = { duration: 0.5, easing: [0.2, 0.8, 0.2, 1], delay: 0.08 };
 
-    // square fade
     const squareVariant = {
         initial: { opacity: 0 },
         animate: { opacity: 1 },
+        hover: {}, // parent hover state
     };
 
-    // icon zoom
     const iconVariant = {
         initial: { opacity: 0, scale: 0.7 },
         animate: { opacity: 1, scale: 1 },
+        hover: { scale: 1.1 }, // scale when parent hovered
     };
+
 
     return (
         <Box
@@ -59,16 +60,17 @@ const FlexGym: React.FC = () => {
                         variants={squareVariant}
                         initial="initial"
                         animate="animate"
+                        whileHover="hover"            // parent controls hover for the whole square
                         transition={commonTransition}
                         sx={{
                             width: { xs: "56%", sm: "48%", md: "clamp(260px, 45vw, 620px)" },
                             minWidth: { xs: 120, md: 220 },
                             maxWidth: 480,
                             aspectRatio: "1 / 1",
-                            backgroundImage: `url(${backgroundImage})`, // ✅ this makes it display the image
-                            backgroundSize: "cover",                    // fills the MotionBox nicely
-                            backgroundPosition: "center",               // centers the image
-                            backgroundRepeat: "no-repeat",              // no tiling
+                            backgroundImage: `url(${backgroundImage})`,
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            backgroundRepeat: "no-repeat",
                             borderTopRightRadius: { xs: "12px", md: "12px" },
                             borderBottomRightRadius: { xs: "12px", md: "12px" },
                             borderTopLeftRadius: 0,
@@ -80,6 +82,7 @@ const FlexGym: React.FC = () => {
                             overflow: "hidden",
                             transformOrigin: "center center",
                             p: 2,
+                            cursor: "pointer",
                         }}
                     >
                         <motion.img
@@ -87,13 +90,8 @@ const FlexGym: React.FC = () => {
                             alt="GlossedUp logo"
                             loading="lazy"
                             variants={iconVariant}
-                            initial="initial"
-                            animate="animate"
-                            // make scale revert quickly while keeping other transitions intact
                             transition={{
-                                // scale should be snappy both in and out
                                 scale: { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] },
-                                // fallback/default for any other properties (opacity, etc.)
                                 default: { duration: commonTransition.duration, ease: [0.2, 0.8, 0.2, 1] },
                             }}
                             style={{
@@ -101,12 +99,7 @@ const FlexGym: React.FC = () => {
                                 height: "60%",
                                 objectFit: "contain",
                                 display: "block",
-                                pointerEvents: "auto",
-                            }}
-                            whileHover={{
-                                scale: 1.1,
-                                // explicit, just in case — matches the scale transition above
-                                transition: { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] },
+                                pointerEvents: "none", // ensures parent receives hover reliably; remove if the image must be clickable
                             }}
                         />
                     </MotionBox>

@@ -19,7 +19,6 @@ const Footer: React.FC = () => {
       sx={{
         py: { xs: 6, md: 8 },
         px: { xs: 3, md: 10 },
-        background: "var(--neutral-100)",
         borderTop: "1px solid var(--neutral-300)",
       }}
     >

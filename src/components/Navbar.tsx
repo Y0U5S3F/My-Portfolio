@@ -11,7 +11,6 @@ import {
 import MenuIcon from "@mui/icons-material/Menu";
 import Logo from "../assets/react.svg";
 import { NavbarElement } from "./Navbar/NavbarElement";
-import { ThemeIcon } from "./Navbar/ThemeIcon";
 import MobileDrawer from "./Navbar/MobileDrawer";
 
 const navLinks = [
@@ -77,7 +76,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
   }, [pathname]);
 
   const isActive = (path: string) => pathname === path;
-  const toggleTheme = () => setIsDarkLocal((s) => !s);
 
   return (
     <>
@@ -143,10 +141,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
               >
                 <NavbarElement links={navLinks} isActive={isActive} mode="desktop" />
               </Box>
-
-              <ThemeIcon isDark={isDarkLocal} toggleTheme={toggleTheme} />
-
-              {/* mobile menu icon on the far right */}
               <IconButton
                 aria-label="open menu"
                 aria-expanded={isMenuOpen}

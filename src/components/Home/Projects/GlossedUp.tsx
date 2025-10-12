@@ -13,17 +13,18 @@ const GlossedUp: React.FC = () => {
   };
   const commonTransition = { duration: 0.5, easing: [0.2, 0.8, 0.2, 1], delay: 0.08 };
 
-  // square fade
   const squareVariant = {
     initial: { opacity: 0 },
     animate: { opacity: 1 },
+    hover: {}, // parent hover state
   };
 
-  // icon zoom
   const iconVariant = {
     initial: { opacity: 0, scale: 0.7 },
     animate: { opacity: 1, scale: 1 },
+    hover: { scale: 1.1 }, // scaled when parent is hovered
   };
+
 
   return (
     <Box
@@ -60,6 +61,8 @@ const GlossedUp: React.FC = () => {
             variants={squareVariant}
             initial="initial"
             animate="animate"
+            // parent will control the hover state for the whole square
+            whileHover="hover"
             transition={commonTransition}
             sx={{
               width: { xs: "56%", sm: "48%", md: "clamp(260px, 45vw, 620px)" },
@@ -78,6 +81,7 @@ const GlossedUp: React.FC = () => {
               overflow: "hidden",
               transformOrigin: "center center",
               p: 2,
+              cursor: "pointer", // nice UX hint
             }}
           >
             <motion.img
@@ -85,13 +89,8 @@ const GlossedUp: React.FC = () => {
               alt="GlossedUp logo"
               loading="lazy"
               variants={iconVariant}
-              initial="initial"
-              animate="animate"
-              // make scale revert quickly while keeping other transitions intact
               transition={{
-                // scale should be snappy both in and out
                 scale: { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] },
-                // fallback/default for any other properties (opacity, etc.)
                 default: { duration: commonTransition.duration, ease: [0.2, 0.8, 0.2, 1] },
               }}
               style={{
@@ -99,12 +98,7 @@ const GlossedUp: React.FC = () => {
                 height: "50%",
                 objectFit: "contain",
                 display: "block",
-                pointerEvents: "auto",
-              }}
-              whileHover={{
-                scale: 1.1,
-                // explicit, just in case — matches the scale transition above
-                transition: { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] },
+                pointerEvents: "none", // ensure parent receives hover reliably; remove if you need the image clickable
               }}
             />
           </MotionBox>
