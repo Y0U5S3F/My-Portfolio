@@ -1,7 +1,7 @@
 // Skills.tsx
 import React from "react";
 import TechMarquee from "./Skills/TechMarquee";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 
 const Skills: React.FC = () => {
   return (
@@ -22,7 +22,12 @@ const Skills: React.FC = () => {
           textAlign: "center",
         }}
       >
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
+        <Container
+          sx={{
+            maxWidth: { xs: "90vw", lg: 1200 },
+            margin: "0 auto",
+            padding: "0 20px"
+          }}>
           <h1 style={{
             margin: 0,
             fontSize: "2.25rem",
@@ -55,7 +60,6 @@ const Skills: React.FC = () => {
           </p>
 
           <div style={{ marginTop: 128 }}>
-            {/* wrapper that applies the fade mask */}
             <div
               style={{
                 position: "relative",
@@ -76,7 +80,7 @@ const Skills: React.FC = () => {
               />
             </div>
           </div>
-        </div>
+        </Container>
       </section>
     </Box>
   );

@@ -1,11 +1,11 @@
 import { TECH_ICONS } from "./TechIcons";
 
 type Props = {
-    color?: string; // color applied to all icons
-    speed?: number; // seconds for one full loop
-    size?: number; // px size for the square that contains the icon
-    iconSize?: number; // icon size directly
-    gap?: number; // px gap between icons
+    color?: string;
+    speed?: number;
+    size?: number;
+    iconSize?: number;
+    gap?: number;
     direction?: "left" | "right";
 };
 
@@ -17,10 +17,7 @@ export default function TechMarquee({
     gap = 16,
     direction = "left",
 }: Props) {
-    // We duplicate the icon set to create a seamless loop
     const icons = TECH_ICONS;
-
-    // Keyframes depend on direction
     const from = direction === "left" ? "translateX(0)" : "translateX(-50%)";
     const to = direction === "left" ? "translateX(-50%)" : "translateX(0)";
 
@@ -42,7 +39,7 @@ export default function TechMarquee({
                 className="marquee-track"
                 style={{
                     animationDuration: `${speed}s`,
-                    color, // this sets currentColor for children SVGs
+                    color,
                 }}
             >
                 <div className="marquee-inner">

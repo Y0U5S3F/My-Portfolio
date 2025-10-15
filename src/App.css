@@ -5,29 +5,20 @@
 /* Put these at the top of your CSS, replacing your current :root / .theme-* blocks */
 
 :root {
-  /* MAIN / ACCENT (kept subtle — GitHub uses blue accents) */
-  --main-light: #f1f8ff;
-  /* subtle blue-ish surface (light) */
-  --main-default: #0969da;
-  /* GitHub blue - primary interactive accent (light) */
-  --main-dark: #0550a6;
-  /* darker blue for hover/borders */
-  --main-muted: #58a6ff;
-  /* lighter accent for highlights */
+  /* core / accents (galaxy purple) */
+  --main-light:   #070417; /* near-black space */
+  --main-default: #7c4dff; /* soft violet (primary) */
+  --main-dark:    #5b21ff; /* vivid purple (emphasis) */
+  --main-muted:   #9ea6d8; /* muted lavender */
 
-  /* NEUTRALS - Light theme defaults */
-  --neutral-white: #ffffff;
-  /* page background */
-  --neutral-100: #f6f8fa;
-  /* surfaces / paper (GitHub: subtle gray) */
-  --neutral-200: #e1e4e8;
-  /* borders / lines */
-  --neutral-600: #6e7781;
-  /* muted text */
-  --neutral-900: #24292f;
-  /* primary text */
-  --neutral-1200: #1f2933;
-  /* deep accents */
+  /* neutrals for dark */
+  --neutral-white:  #06020a; /* very dark - base */
+  --neutral-100:    #0f0b16; /* page background */
+  --neutral-200:    #1b1326; /* surface / cards */
+  --neutral-600:    #8479a3; /* borders / subtle lines */
+  --neutral-900:    #d7d0e9; /* primary text (light) */
+  --neutral-1200:   #ffffff; /* brightest text / accents */
+
 
   /* hero / gradients (light) */
   --color-hero-bg: linear-gradient(to bottom, #ffffff, #f6f8fa);

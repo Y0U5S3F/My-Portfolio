@@ -6,7 +6,6 @@ import backgroundImage from "../../../assets/SplashJumpark.png"
 const MotionBox = motion(Box);
 
 const Jumpark: React.FC = () => {
-  // text entrance
   const commonVariant = {
     initial: { opacity: 0, x: -20 },
     animate: { opacity: 1, x: 0 },
@@ -52,17 +51,15 @@ const Jumpark: React.FC = () => {
             order: { xs: 2, md: 1 },
             display: "flex",
             justifyContent: { xs: "center", md: "flex-start" },
-            alignItems: "center", // keeps the square vertically centered within its column
+            alignItems: "center", 
             height: "100%",
             px: { xs: 0, md: 0 },
           }}
         >
-          {/* Replace your existing MotionBox / motion.img with this block */}
           <MotionBox
             variants={squareVariant}
             initial="initial"
             animate="animate"
-            // parent drives hover state for the whole square
             whileHover="hover"
             transition={commonTransition}
             sx={{
@@ -85,7 +82,7 @@ const Jumpark: React.FC = () => {
               overflow: "hidden",
               transformOrigin: "center center",
               p: 2,
-              cursor: "pointer", // optional, makes it clear it's interactive
+              cursor: "pointer", 
             }}
           >
             <motion.img
@@ -93,7 +90,6 @@ const Jumpark: React.FC = () => {
               alt="GlossedUp logo"
               loading="lazy"
               variants={iconVariant}
-              // remove child's initial/animate props so it inherits from parent
               transition={{
                 scale: { duration: 0.18, ease: [0.2, 0.8, 0.2, 1] },
                 default: { duration: commonTransition.duration, ease: [0.2, 0.8, 0.2, 1] },
@@ -103,7 +99,7 @@ const Jumpark: React.FC = () => {
                 height: "90%",
                 objectFit: "contain",
                 display: "block",
-                pointerEvents: "none", // disable pointer events on the image so parent receives hover consistently
+                pointerEvents: "none", 
               }}
             />
           </MotionBox>
@@ -115,12 +111,10 @@ const Jumpark: React.FC = () => {
           sx={{
             order: { xs: 1, md: 2 },
             px: { xs: 0, md: 6 },
-
-            /* ensure the text column stacks content from the top-left */
             display: "flex",
             flexDirection: "column",
-            alignItems: "flex-start", // left align horizontally
-            justifyContent: "flex-start", // top align vertically
+            alignItems: "flex-start", 
+            justifyContent: "flex-start", 
           }}
         >
           <MotionBox

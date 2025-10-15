@@ -83,7 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
           zIndex: 1200,
         }}
       >
-        <Toolbar sx={{ justifyContent: "center", px: { xs: 1, md: 3 } }}>
+        <Toolbar sx={{ justifyContent: { xs: "flex-end", lg: "center" }, px: { xs: 1, md: 3 } }}>
           <Box
             sx={{
               width: "100%",
@@ -95,122 +95,121 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
               gap: 2,
             }}
           >
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+            <Box
+              component="nav"
+              sx={{
+                display: { xs: "none", lg: "flex" },
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+              }}
+            >
               <Box
-                component="nav"
                 sx={{
-                  display: { xs: "none", lg: "flex" },
-                  position: "absolute",
-                  left: "50%",
-                  transform: "translateX(-50%)",
+                  display: "flex",
+                  gap: 4,
+                  alignItems: "center",
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    gap: 4,
-                    alignItems: "center",
-                  }}
-                >
-                  {navLinks.map((link) => {
-                    const active = isActive(link.id);
-                    return (
+                {navLinks.map((link) => {
+                  const active = isActive(link.id);
+                  return (
+                    <Box
+                      key={link.id}
+                      component="button"
+                      role="link"
+                      tabIndex={0}
+                      aria-current={active ? "true" : undefined}
+                      onClick={() => scrollToSection(link.id)}
+                      onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          scrollToSection(link.id);
+                        }
+                      }}
+                      sx={{
+                        position: "relative",
+                        cursor: "pointer",
+                        color: active ? "var(--neutral-1200)" : "var(--neutral-900)",
+                        fontWeight: active ? 700 : 500,
+                        fontSize: 20,
+                        textTransform: "none",
+                        px: 5,
+                        py: 1,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        transition:
+                          "transform 240ms cubic-bezier(.22,0,.1,1), letter-spacing 240ms cubic-bezier(.22,0,.1,1), color 200ms",
+                        transform: active ? "scale(1.04)" : "scale(1)",
+                        letterSpacing: active ? "0.6px" : "0px",
+                        transformOrigin: "center center",
+                        willChange: "transform, letter-spacing, color",
+                        textDecoration: "none",
+                        background: "none",
+                        border: "none",
+                        "&:focus": {
+                          outline: "none",
+                          boxShadow: "none",
+                        },
+                        WebkitTapHighlightColor: "transparent",
+                        userSelect: "none",
+
+                        "&:hover .underline": {
+                          transform: active ? "scaleX(1.03)" : "scaleX(0.6)",
+                          opacity: 1,
+                        },
+
+                        "&:hover": {
+                          transform: active ? "scale(1.06)" : "scale(1.02)",
+                        },
+                      }}
+                    >
+                      {link.name}
+
                       <Box
-                        key={link.id}
-                        component="button"
-                        role="link"
-                        tabIndex={0}
-                        aria-current={active ? "true" : undefined}
-                        onClick={() => scrollToSection(link.id)}
-                        onKeyDown={(e: React.KeyboardEvent) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            scrollToSection(link.id);
-                          }
-                        }}
+                        className="underline"
                         sx={{
-                          position: "relative",
-                          cursor: "pointer",
-                          color: active ? "var(--neutral-1200)" : "var(--neutral-900)",
-                          fontWeight: active ? 700 : 500,
-                          fontSize: 20,
-                          textTransform: "none",
-                          px: 5,
-                          py: 1,
-                          display: "inline-flex",
-                          alignItems: "center",
-                          justifyContent: "center",
+                          position: "absolute",
+                          left: 0,
+                          right: 0,
+                          bottom: -6,
+                          height: "3px",
+                          background: "var(--neutral-900)",
+                          transformOrigin: "left center",
+                          transform: active ? "scaleX(1)" : "scaleX(0)",
+                          opacity: active ? 1 : 0,
                           transition:
-                            "transform 240ms cubic-bezier(.22,0,.1,1), letter-spacing 240ms cubic-bezier(.22,0,.1,1), color 200ms",
-                          transform: active ? "scale(1.04)" : "scale(1)",
-                          letterSpacing: active ? "0.6px" : "0px",
-                          transformOrigin: "center center",
-                          willChange: "transform, letter-spacing, color",
-                          textDecoration: "none",
-                          background: "none",
-                          border: "none",
-                          "&:focus": {
-                            outline: "none",
-                            boxShadow: "none",
-                          },
-                          WebkitTapHighlightColor: "transparent",
-                          userSelect: "none",
-
-                          "&:hover .underline": {
-                            transform: active ? "scaleX(1.03)" : "scaleX(0.6)",
-                            opacity: 1,
-                          },
-
-                          "&:hover": {
-                            transform: active ? "scale(1.06)" : "scale(1.02)",
-                          },
+                            "transform 320ms cubic-bezier(.22,0,.1,1), opacity 220ms cubic-bezier(.22,0,.1,1)",
+                          pointerEvents: "none",
                         }}
-                      >
-                        {link.name}
-
-                        <Box
-                          className="underline"
-                          sx={{
-                            position: "absolute",
-                            left: 0,
-                            right: 0,
-                            bottom: -6,
-                            height: "3px",
-                            background: "var(--neutral-900)",
-                            transformOrigin: "left center",
-                            transform: active ? "scaleX(1)" : "scaleX(0)",
-                            opacity: active ? 1 : 0,
-                            transition:
-                              "transform 320ms cubic-bezier(.22,0,.1,1), opacity 220ms cubic-bezier(.22,0,.1,1)",
-                            pointerEvents: "none",
-                          }}
-                        />
-                      </Box>
-                    );
-                  })}
-                </Box>
+                      />
+                    </Box>
+                  );
+                })}
               </Box>
-
-              <IconButton
-                aria-label="open menu"
-                aria-expanded={isMenuOpen}
-                onClick={() => setIsMenuOpen(true)}
-                sx={{
-                  display: { xs: "inline-flex", lg: "none" },
-                  transition: "color 200ms ease, transform 150ms ease",
-                  "&:active": { transform: "scale(0.98)" },
-                }}
-                size="large"
-              >
-                <MenuIcon
-                  sx={{
-                    color: scrolled ? "var(--neutral-1200)" : "var(--neutral-900)",
-                    transition: "color 200ms ease",
-                    fontSize: 28,
-                  }}
-                />
-              </IconButton>
             </Box>
+
+            <IconButton
+              aria-label="open menu"
+              aria-expanded={isMenuOpen}
+              onClick={() => setIsMenuOpen(true)}
+              sx={{
+                display: { xs: "inline-flex", lg: "none" },
+                ml: "auto",
+                transition: "color 200ms ease, transform 150ms ease",
+                "&:active": { transform: "scale(0.98)" },
+              }}
+              size="large"
+            >
+              <MenuIcon
+                sx={{
+                  color: scrolled ? "var(--neutral-1200)" : "var(--neutral-900)",
+                  transition: "color 200ms ease",
+                  fontSize: 28,
+                }}
+              />
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,4 +1,3 @@
-// src/components/TechIcons.tsx
 import {
   FaReact,
   FaAngular,

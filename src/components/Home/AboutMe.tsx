@@ -127,7 +127,7 @@ const AboutMe: React.FC = () => {
               <Box
                 sx={{
                   position: "absolute",
-                  top: { xs: 0, lg: "90px" },
+                  top: { xs: "-100px", lg: "90px" },
                   width: "100%",
                   height: "100%",
                   display: "flex",

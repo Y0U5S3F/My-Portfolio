@@ -1,4 +1,3 @@
-// src/components/Navbar/MobileDrawer.tsx
 import React, { useEffect, useState } from "react";
 import {
   Drawer,
@@ -9,7 +8,7 @@ import {
   ListItemText,
 } from "@mui/material";
 
-type NavLink = { name: string; id: string }; // Change path to id
+type NavLink = { name: string; id: string };
 
 interface MobileDrawerProps {
   open: boolean;
@@ -20,11 +19,7 @@ interface MobileDrawerProps {
 }
 
 const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, isActive, onLinkClick }) => {
-  // play controls when the menu-item animations run.
-  // We only set it true after the Drawer/Slide has finished opening.
   const [play, setPlay] = useState(false);
-
-  // ensure we reset play when drawer closes (so it will replay next open)
   useEffect(() => {
     if (!open) setPlay(false);
   }, [open]);
@@ -46,7 +41,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, is
           backgroundColor: "var(--main-light)",
           borderRadius: 0,
           boxShadow: 3,
-          minHeight: 180, // ensure a bit of space so vertical centering is visible
+          minHeight: 180, 
         },
       }}
     >
@@ -54,15 +49,15 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, is
         sx={{
           width: "100%",
           display: "flex",
-          flexDirection: "column",    // <-- important
-          alignItems: "center",       // horizontal center of the column
-          justifyContent: "center",   // vertical centering inside the drawer area
+          flexDirection: "column",    
+          alignItems: "center",       
+          justifyContent: "center",   
           gap: 1,
         }}
       >
         <List
           sx={{
-            width: "auto",            // shrink to content so the whole block is centered
+            width: "auto",            
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -74,37 +69,31 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, is
             return (
               <ListItem key={link.name} disablePadding>
                 <ListItemButton
-                  component="button" // Change from Link to button
-                  onClick={() => onLinkClick(link.id)} // Change from onClose
+                  component="button" 
+                  onClick={() => onLinkClick(link.id)} 
                   disableRipple
-                  selected={isActive(link.id)} // Change from link.path to link.id
+                  selected={isActive(link.id)} 
                   sx={{
-                    width: "auto",                  // don't stretch full width
-                    justifyContent: "center",       // center the content of the button
+                    width: "auto",                  
+                    justifyContent: "center",       
                     textAlign: "center",
-                    // animate vertically so horizontal centering isn't broken
-                    // remove hover background & color changes
                     backgroundColor: "transparent",
                     "&:hover": { backgroundColor: "transparent" },
                     "&.Mui-selected, &.Mui-selected:hover": { backgroundColor: "transparent" },
 
-                    // IMPORTANT: use `play` (not `open`) so animation starts only after slide finished
                     transform: play ? "translateX(0)" : "translateX(-40px)",
                     opacity: play ? 1 : 0,
 
-                    // transition & stagger via delay (only applied when play is true)
                     transitionProperty: "opacity, transform",
                     transitionDuration: "520ms",
                     transitionTimingFunction: "cubic-bezier(.2,.9,.2,1)",
                     transitionDelay: `${play ? delayMs : 0}ms`,
 
-                    // accessibility focus outline
                     "&:focus-visible": {
                       outline: "none",
                       boxShadow: (theme) => `0 0 0 3px ${theme.palette.action.focus}`,
                     },
 
-                    // respect reduced motion
                     "@media (prefers-reduced-motion: reduce)": {
                       transform: "none",
                       opacity: 1,
@@ -114,7 +103,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, is
                 >
                   <ListItemText
                     primary={link.name}
-                    primaryTypographyProps={{ align: "center" }} // center the text itself
+                    primaryTypographyProps={{ align: "center" }} 
                     sx={{
                       ".MuiListItemText-primary": {
                         color: "var(--neutral-900)",
