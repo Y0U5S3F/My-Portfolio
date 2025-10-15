@@ -22,13 +22,12 @@ const LoadingOverlay: React.FC = () => {
         const step = p < 60 ? 2 : p < 85 ? 1 : 0.5;
         return Math.min(99, p + step);
       });
-    }, 120); // slightly slower update rate
+    }, 120);
     return () => {
       if (intervalRef.current) window.clearInterval(intervalRef.current);
     };
   }, [isLoaded]);
 
-  // Handle real load event
   useEffect(() => {
     const onLoad = () => {
       setIsLoaded(true);
