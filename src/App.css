@@ -65,29 +65,20 @@
 
 /* GitHub-like dark theme */
 .theme-dark {
-  /* main / accents for dark (GitHub dark blue + light accents) */
-  --main-light: #0d1117;
-  /* dark surface base */
-  --main-default: #58a6ff;
-  /* GitHub dark primary (soft blue) */
-  --main-dark: #2384ff;
-  /* stronger blue for emphasis in dark */
-  --main-muted: #8b949e;
-  /* muted accent */
+  /* core / accents (galaxy purple) */
+  --main-light:   #070417; /* near-black space */
+  --main-default: #7c4dff; /* soft violet (primary) */
+  --main-dark:    #5b21ff; /* vivid purple (emphasis) */
+  --main-muted:   #9ea6d8; /* muted lavender */
 
   /* neutrals for dark */
-  --neutral-white: #0d1117;
-  /* page background in dark */
-  --neutral-100: #161b22;
-  /* surface / cards */
-  --neutral-200: #21262d;
-  /* borders / lines */
-  --neutral-600: #8b949e;
-  /* muted text */
-  --neutral-900: #c9d1d9;
-  /* primary text (light) */
-  --neutral-1200: #ffffff;
-  /* tertiary / less prominent */
+  --neutral-white:  #06020a; /* very dark - base */
+  --neutral-100:    #0f0b16; /* page background */
+  --neutral-200:    #1b1326; /* surface / cards */
+  --neutral-600:    #8479a3; /* borders / subtle lines */
+  --neutral-900:    #d7d0e9; /* primary text (light) */
+  --neutral-1200:   #ffffff; /* brightest text / accents */
+
 
   /* hero / gradients for dark */
   --color-hero-bg: linear-gradient(to bottom, #0b0f15, #12151b);
@@ -327,7 +318,6 @@ html::-webkit-scrollbar {
 
 .primary-button:hover {
   background-color: var(--main-default) !important;
-  color: var(--neutral-white) !important;
   border-color: var(--main-default) !important;
 }
 

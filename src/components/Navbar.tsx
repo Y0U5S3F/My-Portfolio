@@ -10,12 +10,11 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import Logo from "../assets/react.svg";
-import { NavbarElement } from "./Navbar/NavbarElement";
 import MobileDrawer from "./Navbar/MobileDrawer";
 
 const navLinks = [
   { name: "Hero", path: "/Hero" },
-  { name: "About Me", path: "/AboutMe" },
+  { name: "About\u00A0Me", path: "/AboutMe" }, // non-breaking space
   { name: "Skills", path: "/Skills" },
   { name: "Projects", path: "/Projects" },
   { name: "Contact", path: "/Contact" },
@@ -84,9 +83,11 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
         elevation={scrolled ? 2 : 0}
         sx={{
           top: 0,
-          backgroundColor: scrolled ? "var(--neutral-white, rgba(255,255,255,0.95))" : "transparent",
-          boxShadow: scrolled ? "0 1px 2px rgba(0,0,0,0.1)" : "none",
-          transition: "all 0.3s ease",
+          backgroundColor: scrolled ? "rgba(13,17,23,0.75)" : "transparent",
+          backdropFilter: scrolled ? "blur(8px) saturate(130%)" : "none",
+          borderBottom: scrolled ? "1px solid rgba(255,255,255,0.06)" : "none",
+          boxShadow: scrolled ? "0 1px 6px rgba(0,0,0,0.18)" : "none",
+          transition: "background-color 250ms ease, backdrop-filter 250ms ease, box-shadow 250ms ease",
           zIndex: 1200,
         }}
       >
@@ -103,12 +104,12 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
           >
             {/* LEFT: logo only */}
             <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Link to="/" className="logo-link" aria-label="home">
+              <Link to="/" className="logo-link" aria-label="home" style={{ textDecoration: "none" }}>
                 <div
                   style={{
                     borderRadius: "50%",
-                    width: "45px",
-                    height: "45px",
+                    width: "64px",
+                    height: "64px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -121,41 +122,121 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
             </Box>
 
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
+              {/* CENTER: desktop nav - matches Projects.tsx styling */}
               <Box
+                component="nav"
                 sx={{
-                  display: { xs: "none", md: "flex" },
+                  display: { xs: "none", lg: "flex" }, // hide on small screens
                   position: "absolute",
                   left: "50%",
                   transform: "translateX(-50%)",
                 }}
               >
-                <NavbarElement links={navLinks} isActive={isActive} mode="desktop" />
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 4,
+                    alignItems: "center",
+                  }}
+                >
+                  {navLinks.map((link) => {
+                    const active = isActive(link.path);
+                    return (
+                      <Box
+                        key={link.path}
+                        component={Link}
+                        to={link.path}
+                        role="link"
+                        tabIndex={0}
+                        aria-current={active ? "true" : undefined}
+                        onClick={() => {
+                          // close mobile/menu if needed (no-op for desktop, safe)
+                          setIsMenuOpen(false);
+                        }}
+                        onKeyDown={(e: React.KeyboardEvent) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            // Let the Link handle navigation; prevent page jump for space
+                            e.preventDefault();
+                            (e.target as HTMLElement).click();
+                          }
+                        }}
+                        sx={{
+                          position: "relative",
+                          cursor: "pointer",
+                          color: active ? "var(--neutral-1200)" : "var(--neutral-900)",
+                          fontWeight: active ? 700 : 500,
+                          fontSize: 20,
+                          textTransform: "none",
+                          px: 5,
+                          py: 1,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                          transition:
+                            "transform 240ms cubic-bezier(.22,0,.1,1), letter-spacing 240ms cubic-bezier(.22,0,.1,1), color 200ms",
+                          transform: active ? "scale(1.04)" : "scale(1)",
+                          letterSpacing: active ? "0.6px" : "0px",
+                          transformOrigin: "center center",
+                          willChange: "transform, letter-spacing, color",
+                          textDecoration: "none", // avoid link underline
+                          "&:focus": {
+                            outline: "none",
+                            boxShadow: "none",
+                          },
+                          WebkitTapHighlightColor: "transparent",
+                          userSelect: "none",
+
+                          "&:hover .underline": {
+                            transform: active ? "scaleX(1.03)" : "scaleX(0.6)",
+                            opacity: 1,
+                          },
+
+                          "&:hover": {
+                            transform: active ? "scale(1.06)" : "scale(1.02)",
+                          },
+                        }}
+                      >
+                        {link.name}
+
+                        {/* underline */}
+                        <Box
+                          className="underline"
+                          sx={{
+                            position: "absolute",
+                            left: 0,
+                            right: 0,
+                            bottom: -6,
+                            height: "3px",
+                            background: "var(--neutral-900)",
+                            transformOrigin: "left center",
+                            transform: active ? "scaleX(1)" : "scaleX(0)",
+                            opacity: active ? 1 : 0,
+                            transition:
+                              "transform 320ms cubic-bezier(.22,0,.1,1), opacity 220ms cubic-bezier(.22,0,.1,1)",
+                            pointerEvents: "none",
+                          }}
+                        />
+                      </Box>
+                    );
+                  })}
+                </Box>
               </Box>
-              <Box
-                sx={{
-                  display: { xs: "none", md: "flex" },
-                  position: "absolute",
-                  left: "50%",
-                  transform: "translateX(-50%)",
-                }}
-              >
-                <NavbarElement links={navLinks} isActive={isActive} mode="desktop" />
-              </Box>
+
+              {/* Mobile menu button */}
               <IconButton
                 aria-label="open menu"
                 aria-expanded={isMenuOpen}
                 onClick={() => setIsMenuOpen(true)}
                 sx={{
-                  display: { xs: "inline-flex", md: "none" },
+                  display: { xs: "inline-flex", lg: "none" },
                   transition: "color 200ms ease, transform 150ms ease",
-                  // optional tiny scale on press
                   "&:active": { transform: "scale(0.98)" },
                 }}
                 size="large"
               >
                 <MenuIcon
                   sx={{
-                    color: "var(--neutral-900)",
+                    color: scrolled ? "var(--neutral-1200)" : "var(--neutral-900)",
                     transition: "color 200ms ease",
                     fontSize: 28,
                   }}
@@ -170,7 +251,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
         open={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         navLinks={navLinks}
-        isActive={isActive}
+        isActive={(p: string) => pathname === p}
       />
     </>
   );

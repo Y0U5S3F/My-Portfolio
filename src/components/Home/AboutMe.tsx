@@ -1,166 +1,145 @@
-import { Box, Grid, Typography, Button } from "@mui/material";
+import React, { useEffect, useRef, useState } from "react";
+import { Grid, Box, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { motion } from "framer-motion";
 import AboutMeShape from "./Shapes/AboutMeShape";
 
 const MotionBox = motion(Box);
-const MotionDiv = motion.div;
 
-const containerVariants = {
-  hidden: {},
-  visible: {
-    transition: {
-      // stagger the children so text parts appear slightly one after the other
-      staggerChildren: 0.10,
-      when: "beforeChildren",
-    },
-  },
-};
+const AboutMe: React.FC = () => {
+  const [shouldRender, setShouldRender] = useState(false);
+  const [inView, setInView] = useState(false);
+  const rootRef = useRef<HTMLElement | null>(null);
 
-const textVariant = {
-  hidden: { x: -80, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 120, damping: 16, duration: 0.6 },
-  },
-};
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShouldRender(true);
+    }, 100);
+    return () => clearTimeout(timer);
+  }, []);
 
-const subTextVariant = {
-  hidden: { x: -40, opacity: 0 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 100, damping: 14, duration: 0.6 },
-  },
-};
+  useEffect(() => {
+    const node = rootRef.current;
+    if (!node) return;
 
-const shapeVariant = {
-  hidden: { x: 100, opacity: 0, scale: 0.98 },
-  visible: {
-    x: 0,
-    opacity: 1,
-    scale: 1,
-    transition: { type: "spring", stiffness: 90, damping: 14, duration: 0.8 },
-  },
-};
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setInView(true);
+            obs.unobserve(node);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
 
-const AboutMe = () => {
+    obs.observe(node);
+    return () => obs.disconnect();
+  }, []);
+
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down("sm"));
+  const shapeScale = isXs ? 0.15 : 0.2;
+
+  const textInitial = isXs ? { y: 60, opacity: 0 } : { x: -200, opacity: 0 };
+  const shapeInitial = isXs ? { y: 60, opacity: 0 } : { x: 200, opacity: 0 };
+  const visible = { x: 0, y: 0, opacity: 1 };
+  const transition = { duration: 1.5, Easing: "easeOut" };
+
   return (
     <Box
       id="aboutme"
+      ref={rootRef as any}
+      display="flex"
+      flexDirection="column"
       sx={{
-        minHeight: "70vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        px: { xs: 3, md: 6 },
-        position: "relative",
-        overflow: "visible",
+        maxHeight: "60vh",
+        width: "100%",
       }}
     >
       <Grid
         container
         spacing={4}
         alignItems="center"
-        sx={{
-          maxWidth: "1400px",
-          width: "100%",
-        }}
+        justifyContent="center"
+        sx={{ width: "100%", mx: "auto", maxWidth: 1600 }}
       >
         <Grid size={{ xs: 12, lg: 6 }}>
-          <MotionDiv
-            // animate when in view once
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.3 }}
-            variants={containerVariants}
+          <MotionBox
+            initial={textInitial}
+            animate={inView ? visible : undefined}
+            transition={transition}
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems={{ xs: "center", lg: "flex-start" }}
+            textAlign={{ xs: "center", lg: "left" }}
+            sx={{
+              width: "100%",
+              maxWidth: { xs: "100%", lg: 640 },
+              mx: "auto",
+              py: { xs: 4, lg: 0 },
+            }}
           >
-            <MotionDiv variants={textVariant}>
-              <Typography
-                variant="h3"
-                sx={{
-                  fontWeight: 700,
-                  color: "var(--neutral-1200)",
-                  mb: 3,
-                }}
-              >
-                Hi, I'm{" "}
-                <Box component="span" sx={{ color: "var(--main-dark)" }}>
-                  Youssef
-                </Box>
-              </Typography>
-            </MotionDiv>
-
-            <MotionDiv variants={subTextVariant}>
-              <Typography
-                variant="h6"
-                sx={{
-                  color: "var(--neutral-900)",
-                  maxWidth: 600,
-                  lineHeight: 1.6,
-                }}
-              >
-                A <strong>full-stack developer</strong> and a{" "}
-                <strong>computer science graduate</strong>. Passionate about
-                crafting clean, efficient, and aesthetic digital experiences.
-                I love working with modern frameworks, building seamless
-                front-ends, and scalable back-ends.
-              </Typography>
-            </MotionDiv>
-
-            <MotionDiv
-              variants={{
-                hidden: { opacity: 0, y: 8 },
-                visible: { opacity: 1, y: 0, transition: { delay: 0.15 } },
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: 700,
+                color: "var(--neutral-1200)",
+                mb: 3,
               }}
             >
-              <Button
-                className="primary-button"
-                size="large"
-                href="#projects"
-                sx={{ mt: 3 }}
-              >
-                View My Work
-              </Button>
-            </MotionDiv>
-          </MotionDiv>
+              Hi, I'm {" "}
+              <Box component="span" sx={{ color: "var(--main-dark)" }}>
+                Youssef
+              </Box>
+            </Typography>
+
+            <Typography
+              variant="h6"
+              sx={{
+                color: "var(--neutral-900)",
+                maxWidth: { xs: "100%", lg: 600 },
+                lineHeight: 1.6,
+              }}
+            >
+              A <strong>full-stack developer</strong> and a {" "}
+              <strong>computer science graduate</strong>. Passionate about
+              crafting clean, efficient, and aesthetic digital experiences.
+              I love working with modern frameworks, building seamless
+              front-ends, and scalable back-ends.
+            </Typography>
+          </MotionBox>
         </Grid>
 
         <Grid size={{ xs: 12, lg: 6 }}>
-          <Box
+          <MotionBox
+            initial={shapeInitial}
+            animate={inView ? visible : undefined}
+            transition={{ ...transition, delay: 0.08 }}
             sx={{
               width: "100%",
-              height: { xs: "400px", lg: "60vh" },
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              minHeight: 0,
-              maxHeight: { xs: "400px", lg: "70vh" },
+              height: { xs: "60vh", lg: "60vh" },
+              position: "relative",
             }}
           >
-            <Box
-              sx={{
-                width: "100%",
-                height: "100%",
-                maxWidth: 400,
-                maxHeight: "100%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {/* Wrap the shape in a motion div so it slides from the right */}
-              <MotionBox
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={shapeVariant}
-                sx={{ width: "100%", height: "100%", display: "flex" }}
+            {shouldRender && (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: { xs: 0, lg: "90px" },
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  pointerEvents: "none",
+                }}
               >
-                <AboutMeShape autoRotate={true} scale={1} />
-              </MotionBox>
-            </Box>
-          </Box>
+                <AboutMeShape scale={shapeScale} position={[0, 0, 0]} />
+              </Box>
+            )}
+          </MotionBox>
         </Grid>
       </Grid>
     </Box>

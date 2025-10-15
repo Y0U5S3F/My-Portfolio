@@ -1,10 +1,10 @@
-import { Suspense } from "react";
+import { Suspense, memo, useRef } from "react";
 import type { FC } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF, Float, Stage } from "@react-three/drei";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { useGLTF } from "@react-three/drei";
+import * as THREE from "three";
 
 type AboutMeShapeProps = {
-  className?: string;
   autoRotate?: boolean;
   scale?: number;
   position?: [number, number, number];
@@ -12,50 +12,60 @@ type AboutMeShapeProps = {
 
 function Model({ scale = 1, position = [0, 0, 0] }: Partial<AboutMeShapeProps>) {
   const gltf = useGLTF("/3dModels/computer/scene.gltf") as any;
-  return <primitive object={gltf.scene} scale={scale} position={position} />;
+  const meshRef = useRef<THREE.Group>(null);
+
+  useFrame((state, delta) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y += delta * 0.3;
+      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.04;
+    }
+  });
+
+  return (
+    <group ref={meshRef}>
+      <primitive object={gltf.scene} scale={scale} position={position} />
+    </group>
+  );
 }
 
-const AboutMeShape: FC<AboutMeShapeProps> = ({
-  // change default to fill parent
-  className = "w-full h-full",
-  autoRotate = true,
+const AboutMeShape: FC<AboutMeShapeProps> = memo(({
   scale = 1,
-  position = [0, 0, 0],
+  position = [0, 0, 0] as [number, number, number],
 }) => {
   return (
-    // ensure the wrapper actually has full width/height and is a flex center
-    <div
-      className={className}
+    <Canvas
+      frameloop="always"
+      dpr={[1, 1.5]}
       style={{
         width: "100%",
         height: "100%",
-        minHeight: 0, // helps with flex parents
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        display: "block",
+      }}
+      camera={{ position: [0, 0, 4], fov: 45 }}
+      gl={{
+        powerPreference: "high-performance",
+        antialias: true,
+        alpha: true,
+        preserveDrawingBuffer: false,
+        failIfMajorPerformanceCaveat: false,
+      }}
+      onCreated={({ gl }) => {
+        gl.setClearColor(0x000000, 0);
+        gl.setAnimationLoop(null);
       }}
     >
-      <Canvas
-        // force canvas to fill the wrapper
-        style={{ width: "100%", height: "100%", display: "block" }}
-        camera={{ position: [0, 0, 4], fov: 45 }}
-      >
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[10, 10, 10]} intensity={0.8} />
+      <ambientLight intensity={0.8} />
+      <directionalLight position={[10, 10, 5]} intensity={1.0} />
+      <pointLight position={[-10, -10, -5]} intensity={0.5} />
 
-        <Suspense fallback={null}>
-          <Stage intensity={0.5} shadows={false}>
-            <Float rotationIntensity={0.2} floatIntensity={0.8}>
-              <Model scale={scale} position={position} />
-            </Float>
-          </Stage>
-        </Suspense>
-
-        <OrbitControls enablePan={false} enableZoom={false} autoRotate={autoRotate} />
-      </Canvas>
-    </div>
+      <Suspense fallback={null}>
+        <Model scale={scale} position={position} />
+      </Suspense>
+    </Canvas>
   );
-};
+});
+
+AboutMeShape.displayName = "AboutMeShape";
 
 useGLTF.preload("/3dModels/computer/scene.gltf");
 

@@ -1,5 +1,21 @@
 import React, { useState } from "react";
-import { Box, Grid, Typography, TextField, Button, Snackbar, Alert } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Snackbar,
+  Alert,
+  Paper,
+  Avatar,
+  IconButton,
+  Tooltip,
+  CircularProgress,
+} from "@mui/material";
+import SendIcon from "@mui/icons-material/Send";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
 import { motion } from "framer-motion";
 
 const MotionBox = motion(Box);
@@ -10,6 +26,9 @@ const Contact: React.FC = () => {
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<{ name?: string; email?: string; message?: string }>({});
   const [openSnack, setOpenSnack] = useState(false);
+  const [snackMessage, setSnackMessage] = useState("");
+  const [snackSeverity, setSnackSeverity] = useState<"success" | "error">("success");
+  const [loading, setLoading] = useState(false);
 
   const validate = () => {
     const e: typeof errors = {};
@@ -21,20 +40,29 @@ const Contact: React.FC = () => {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (ev?: React.FormEvent) => {
+  const handleSubmit = async (ev?: React.FormEvent) => {
     ev?.preventDefault();
     if (!validate()) return;
 
-    // placeholder: replace with your API call or 3rd-party integration
-    // e.g. await fetch('/api/contact', { method: 'POST', body: JSON.stringify({ name, email, message }) })
-    console.log("Contact submitted:", { name, email, message });
+    setLoading(true);
 
-    // show success feedback and reset
-    setOpenSnack(true);
-    setName("");
-    setEmail("");
-    setMessage("");
-    setErrors({});
+    try {
+      await new Promise((res) => setTimeout(res, 700));
+
+      setSnackMessage("Message sent — thanks!");
+      setSnackSeverity("success");
+      setOpenSnack(true);
+      setName("");
+      setEmail("");
+      setMessage("");
+      setErrors({});
+    } catch (err) {
+      setSnackMessage("Something went wrong. Try again later.");
+      setSnackSeverity("error");
+      setOpenSnack(true);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -42,74 +70,174 @@ const Contact: React.FC = () => {
       id="contact"
       initial={{ y: 30, opacity: 0 }}
       whileInView={{ y: 0, opacity: 1 }}
-      viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.6, ease: "circOut" }}
-      sx={{ py: { xs: 6, md: 12 }, px: { xs: 3, md: 10 } }}
+      viewport={{ once: true, amount: 0.2 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      sx={{ py: { xs: 6, md: 10 }, px: { xs: 3, md: 8 } }}
     >
-      <Grid container spacing={4} justifyContent="center">
-        <Grid item xs={12} md={8}>
-          <Box sx={{ textAlign: "center", mb: 4 }}>
-            <Typography variant="h4" component="h2" sx={{ fontWeight: 700, mb: 1 }}>
-              Get in touch
-            </Typography>
-            <Typography variant="body1" sx={{ color: "var(--neutral-800)" }}>
-              Have a question or want to work together? Send a message and we'll respond as soon as we can.
-            </Typography>
-          </Box>
+      <Grid container spacing={6} justifyContent="center">
+        <Grid size={{ xs: 12, lg: 10 }}>
+          <Paper
+            elevation={0}
+            sx={{
+              display: "flex",
+              gap: 4,
+              padding: { xs: 3, md: 4 },
+              background: "transparent",
+              borderRadius: 2,
+              alignItems: "stretch",
+            }}
+          >
+            <Box sx={{ flex: "0 0 320px", display: { xs: "none", md: "block" } }}>
+              <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+                <Avatar sx={{ bgcolor: "var(--main-dark)", width: 92, height: 92 }}>
+                  <Box
+                    component="img"
+                    src="https://avatars.githubusercontent.com/u/110101516?v=4"
+                    alt="Youssef"
+                    loading="lazy"
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      display: "block",      // avoids inline element gaps
+                      borderRadius: "50%",   // keep circular crop inside Avatar
+                    }}
+                  />
+                </Avatar>
+                <Box>
+                  <Typography variant="h5" sx={{ fontWeight: 700, color: "var(--neutral-1200)" }}>
+                    Let's build something
+                  </Typography>
+                  <Typography variant="body2" sx={{ color: "var(--neutral-900)" }}>
+                    I usually respond within a short time.
+                  </Typography>
+                </Box>
+              </Box>
 
-          <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 820, mx: "auto" }}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  error={Boolean(errors.name)}
-                  helperText={errors.name}
-                />
-              </Grid>
+              <Paper
+                variant="outlined"
+                sx={{
+                  p: 2,
+                  mt: 2,
+                  background: "transparent",
+                  borderColor: "rgba(139,148,158,0.12)",
+                }}
+              >
+                <Typography variant="subtitle2" sx={{ color: "var(--main-muted)", mb: 1 }}>
+                  Contact
+                </Typography>
+                <Typography variant="body2" sx={{ color: "var(--neutral-900)", fontSize: 13 }}>
+                  youssefsaidani19@gmail.com
+                </Typography>
 
-              <Grid item xs={12} md={6}>
-                <TextField
-                  fullWidth
-                  label="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  error={Boolean(errors.email)}
-                  helperText={errors.email}
-                />
-              </Grid>
+                <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
+                  <Tooltip title="GitHub">
+                    <IconButton href="https://github.com/Y0U5S3F/" size="small" aria-label="GitHub" sx={{ color: "var(--neutral-1200)" }}>
+                      <GitHubIcon />
+                    </IconButton>
+                  </Tooltip>
+                  <Tooltip title="LinkedIn">
+                    <IconButton href="https://www.linkedin.com/in/youssef-saidani/" size="small" aria-label="LinkedIn" sx={{ color: "var(--neutral-1200)" }}>
+                      <LinkedInIcon />
+                    </IconButton>
+                  </Tooltip>
+                </Box>
+              </Paper>
+            </Box>
 
-              <Grid item xs={12}>
-                <TextField
-                  fullWidth
-                  label="Message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  error={Boolean(errors.message)}
-                  helperText={errors.message}
-                  multiline
-                  rows={6}
-                />
-              </Grid>
+            {/* RIGHT: Form */}
+            <Box component="form" onSubmit={handleSubmit} sx={{ flex: 1 }}>
+              <Typography variant="h4" sx={{ color: "var(--neutral-1200)", fontWeight: 700, mb: 1 }}>
+                Get in touch
+              </Typography>
+              <Typography variant="body2" sx={{ color: "var(--neutral-900)", mb: 3 }}>
+                Have a question or want to work together? Send a message and I&apos;ll get back to you.
+              </Typography>
 
-              <Grid item xs={12} sx={{ textAlign: "center", mt: 1 }}>
-                <Button type="submit" variant="contained" size="large">
-                  Send message
-                </Button>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12, lg: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    error={Boolean(errors.name)}
+                    helperText={errors.name}
+                    variant="outlined"
+                    InputLabelProps={{ style: { color: "var(--neutral-600)" } }}
+                    sx={{
+                      background: "var(--neutral-200)",
+                      borderRadius: 1,
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
+                      '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(35,132,255,0.12)' },
+                    }}
+                  />
+                </Grid>
+
+                <Grid size={{ xs: 12, lg: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    error={Boolean(errors.email)}
+                    helperText={errors.email}
+                    variant="outlined"
+                    InputLabelProps={{ style: { color: "var(--neutral-600)" } }}
+                    sx={{
+                      background: "var(--neutral-200)",
+                      borderRadius: 1,
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
+                      '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(35,132,255,0.12)' },
+                    }}
+                  />
+                </Grid>
+
+                <Grid size={12}>
+                  <TextField
+                    fullWidth
+                    label="Message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    error={Boolean(errors.message)}
+                    helperText={errors.message}
+                    multiline
+                    rows={6}
+                    variant="outlined"
+                    InputLabelProps={{ style: { color: "var(--neutral-600)" } }}
+                    sx={{
+                      background: "var(--neutral-200)",
+                      borderRadius: 1,
+                      '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
+                      '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(35,132,255,0.12)' },
+                    }}
+                  />
+                </Grid>
+
+                <Grid size={12} sx={{ display: "flex", justifyContent: "flex-end", mt: 1 }}>
+                  <Button
+                    type="submit"
+                    className="primary-button"
+                    size="large"
+                    disabled={loading}
+                    endIcon={loading ? <CircularProgress size={18} /> : <SendIcon />}
+
+                  >
+                    {loading ? "Sending..." : "Send message"}
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </Box>
+            </Box>
+          </Paper>
         </Grid>
       </Grid>
 
-      <Snackbar open={openSnack} autoHideDuration={4000} onClose={() => setOpenSnack(false)}>
-        <Alert onClose={() => setOpenSnack(false)} severity="success" sx={{ width: "100%" }}>
-          Message sent — thanks!
+      <Snackbar open={openSnack} autoHideDuration={4500} onClose={() => setOpenSnack(false)}>
+        <Alert onClose={() => setOpenSnack(false)} severity={snackSeverity} sx={{ width: "100%" }}>
+          {snackMessage}
         </Alert>
       </Snackbar>
-    </MotionBox>
+    </MotionBox >
   );
 };
 

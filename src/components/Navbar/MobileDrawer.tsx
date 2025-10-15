@@ -40,7 +40,7 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, is
         onEntered: () => setPlay(true),
         onExited: () => setPlay(false),
       }}
-      sx={{ display: { md: "none" }, }}
+      sx={{ display: { lg: "none" }, }}
       PaperProps={{
         sx: {
           backgroundColor: "var(--main-light)",
