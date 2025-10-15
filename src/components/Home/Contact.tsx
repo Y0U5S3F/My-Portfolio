@@ -10,7 +10,6 @@ import {
   Paper,
   Avatar,
   IconButton,
-  Tooltip,
   CircularProgress,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
@@ -129,23 +128,33 @@ const Contact: React.FC = () => {
                 <Typography variant="body2" sx={{ color: "var(--neutral-900)", fontSize: 13 }}>
                   youssefsaidani19@gmail.com
                 </Typography>
+                <Box sx={{ display: "flex", gap: 1, mt: 1 }}>
+                  <IconButton
+                    href="https://github.com/Y0U5S3F/"
+                    aria-label="GitHub"
+                    sx={{
+                      color: "var(--neutral-1200)",
+                      transition: "color 0.3s ease",
+                      "&:hover": { color: "var(--main-default)" },
+                    }}
+                  >
+                    <GitHubIcon sx={{ fontSize: 34 }} />
+                  </IconButton>
 
-                <Box sx={{ display: "flex", gap: 1, mt: 2 }}>
-                  <Tooltip title="GitHub">
-                    <IconButton href="https://github.com/Y0U5S3F/" size="small" aria-label="GitHub" sx={{ color: "var(--neutral-1200)" }}>
-                      <GitHubIcon />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title="LinkedIn">
-                    <IconButton href="https://www.linkedin.com/in/youssef-saidani/" size="small" aria-label="LinkedIn" sx={{ color: "var(--neutral-1200)" }}>
-                      <LinkedInIcon />
-                    </IconButton>
-                  </Tooltip>
+                  <IconButton
+                    href="https://www.linkedin.com/in/youssef-saidani/"
+                    aria-label="LinkedIn"
+                    sx={{
+                      color: "var(--neutral-1200)",
+                      transition: "color 0.3s ease",
+                      "&:hover": { color: "var(--main-default)" },
+                    }}
+                  >
+                    <LinkedInIcon sx={{ fontSize: 34 }} />
+                  </IconButton>
                 </Box>
               </Paper>
             </Box>
-
-            {/* RIGHT: Form */}
             <Box component="form" onSubmit={handleSubmit} sx={{ flex: 1 }}>
               <Typography variant="h4" sx={{ color: "var(--neutral-1200)", fontWeight: 700, mb: 1 }}>
                 Get in touch
@@ -170,6 +179,10 @@ const Contact: React.FC = () => {
                       borderRadius: 1,
                       '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
                       '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(35,132,255,0.12)' },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--main-dark)' },
+                      '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--main-dark)',
+                      },
                     }}
                   />
                 </Grid>
@@ -189,6 +202,10 @@ const Contact: React.FC = () => {
                       borderRadius: 1,
                       '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
                       '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(35,132,255,0.12)' },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--main-dark)' },
+                      '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--main-dark)',
+                      },
                     }}
                   />
                 </Grid>
@@ -210,6 +227,10 @@ const Contact: React.FC = () => {
                       borderRadius: 1,
                       '& .MuiOutlinedInput-notchedOutline': { borderColor: 'transparent' },
                       '&:hover .MuiOutlinedInput-notchedOutline': { borderColor: 'rgba(35,132,255,0.12)' },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'var(--main-dark)' },
+                      '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--main-dark)',
+                      },
                     }}
                   />
                 </Grid>
