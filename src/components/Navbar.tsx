@@ -1,6 +1,5 @@
 // src/components/Navbar.tsx
 import React, { useEffect, useState } from "react";
-import { useLocation, Link } from "react-router-dom";
 import "../App.css";
 import {
   AppBar,
@@ -9,15 +8,14 @@ import {
   IconButton,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import Logo from "../assets/react.svg";
 import MobileDrawer from "./Navbar/MobileDrawer";
 
 const navLinks = [
-  { name: "Hero", path: "/Hero" },
-  { name: "About\u00A0Me", path: "/AboutMe" }, // non-breaking space
-  { name: "Skills", path: "/Skills" },
-  { name: "Projects", path: "/Projects" },
-  { name: "Contact", path: "/Contact" },
+  { name: "Hero", id: "hero" },
+  { name: "About\u00A0Me", id: "aboutme" },
+  { name: "Skills", id: "skills" },
+  { name: "Projects", id: "projects" },
+  { name: "Contact", id: "contact" },
 ];
 
 type NavbarProps = {
@@ -25,18 +23,12 @@ type NavbarProps = {
   setIsDark?: (v: boolean) => void;
 };
 
-const STORAGE_KEY = "site-theme";
-
 const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDarkProp }) => {
-  const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   const [isDarkLocal, setIsDarkLocal] = useState<boolean>(() => {
-    try {
-      const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) return saved === "dark";
-    } catch { }
     return typeof window !== "undefined" && window.matchMedia
       ? window.matchMedia("(prefers-color-scheme: dark)").matches
       : false;
@@ -47,9 +39,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
     const html = document.documentElement;
     html.classList.remove("theme-dark", "theme-light");
     html.classList.add(className);
-    try {
-      localStorage.setItem(STORAGE_KEY, isDarkLocal ? "dark" : "light");
-    } catch { }
     if (typeof setIsDarkProp === "function") {
       setIsDarkProp(isDarkLocal);
     }
@@ -59,8 +48,7 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
     if (typeof isDarkProp === "boolean" && isDarkProp !== isDarkLocal) {
       setIsDarkLocal(isDarkProp);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isDarkProp]);
+  }, [isDarkProp, isDarkLocal]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -69,12 +57,16 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // close mobile drawer when route changes
-  useEffect(() => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+      setActiveSection(id);
+    }
     setIsMenuOpen(false);
-  }, [pathname]);
+  };
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (id: string) => activeSection === id;
 
   return (
     <>
@@ -96,37 +88,18 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
             sx={{
               width: "100%",
               maxWidth: 1100,
+              minHeight: { xs: 0, lg: 80 },
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
               gap: 2,
             }}
           >
-            {/* LEFT: logo only */}
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <Link to="/" className="logo-link" aria-label="home" style={{ textDecoration: "none" }}>
-                <div
-                  style={{
-                    borderRadius: "50%",
-                    width: "64px",
-                    height: "64px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    margin: 5,
-                  }}
-                >
-                  <img src={Logo} alt="logo" style={{ height: "38px" }} />
-                </div>
-              </Link>
-            </Box>
-
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              {/* CENTER: desktop nav - matches Projects.tsx styling */}
               <Box
                 component="nav"
                 sx={{
-                  display: { xs: "none", lg: "flex" }, // hide on small screens
+                  display: { xs: "none", lg: "flex" },
                   position: "absolute",
                   left: "50%",
                   transform: "translateX(-50%)",
@@ -140,24 +113,19 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
                   }}
                 >
                   {navLinks.map((link) => {
-                    const active = isActive(link.path);
+                    const active = isActive(link.id);
                     return (
                       <Box
-                        key={link.path}
-                        component={Link}
-                        to={link.path}
+                        key={link.id}
+                        component="button"
                         role="link"
                         tabIndex={0}
                         aria-current={active ? "true" : undefined}
-                        onClick={() => {
-                          // close mobile/menu if needed (no-op for desktop, safe)
-                          setIsMenuOpen(false);
-                        }}
+                        onClick={() => scrollToSection(link.id)}
                         onKeyDown={(e: React.KeyboardEvent) => {
                           if (e.key === "Enter" || e.key === " ") {
-                            // Let the Link handle navigation; prevent page jump for space
                             e.preventDefault();
-                            (e.target as HTMLElement).click();
+                            scrollToSection(link.id);
                           }
                         }}
                         sx={{
@@ -178,7 +146,9 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
                           letterSpacing: active ? "0.6px" : "0px",
                           transformOrigin: "center center",
                           willChange: "transform, letter-spacing, color",
-                          textDecoration: "none", // avoid link underline
+                          textDecoration: "none",
+                          background: "none",
+                          border: "none",
                           "&:focus": {
                             outline: "none",
                             boxShadow: "none",
@@ -198,7 +168,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
                       >
                         {link.name}
 
-                        {/* underline */}
                         <Box
                           className="underline"
                           sx={{
@@ -222,7 +191,6 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
                 </Box>
               </Box>
 
-              {/* Mobile menu button */}
               <IconButton
                 aria-label="open menu"
                 aria-expanded={isMenuOpen}
@@ -251,7 +219,8 @@ const Navbar: React.FC<NavbarProps> = ({ isDark: isDarkProp, setIsDark: setIsDar
         open={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
         navLinks={navLinks}
-        isActive={(p: string) => pathname === p}
+        isActive={(id: string) => activeSection === id}
+        onLinkClick={scrollToSection}
       />
     </>
   );

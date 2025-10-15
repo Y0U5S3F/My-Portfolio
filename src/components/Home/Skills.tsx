@@ -6,7 +6,7 @@ import { Box } from "@mui/material";
 const Skills: React.FC = () => {
   return (
     <Box
-    id="skills"
+      id="skills"
       sx={{
         minHeight: "70vh",
         display: "flex",
@@ -22,7 +22,7 @@ const Skills: React.FC = () => {
           textAlign: "center",
         }}
       >
-        <div style={{ maxWidth: 900, margin: "0 auto", padding: "0 20px" }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 20px" }}>
           <h1 style={{
             margin: 0,
             fontSize: "2.25rem",
@@ -42,16 +42,39 @@ const Skills: React.FC = () => {
               marginRight: "auto",
             }}
           >
-            My work spans the full technology stack.
-            from modern front-end frameworks and
-            scalable back-end systems to databases, DevOps tools,
-            and containerization. Below is a selection of the
-            technologies I regularly use to build efficient,
-            reliable, and maintainable solutions.
+            My work spans the full technology stack —
+            from building dynamic front-ends with React
+            to developing robust back-ends using Django
+            and PostgreSQL. I have prior experience with
+            Spring Boot, Angular, and PHP, and I enjoy
+            exploring areas like computer vision in my
+            spare time. I regularly work with tools and
+            technologies that help me build efficient,
+            reliable, and maintainable solutions across
+            the stack.
           </p>
 
           <div style={{ marginTop: 128 }}>
-            <TechMarquee color="var(--neutral-1200)" speed={10} size={128} iconSize={85} gap={20} direction="left" />
+            {/* wrapper that applies the fade mask */}
+            <div
+              style={{
+                position: "relative",
+                overflow: "hidden",
+                WebkitMaskImage:
+                  "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 88%, rgba(0,0,0,0) 100%)",
+                maskImage:
+                  "linear-gradient(to right, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 12%, rgba(0,0,0,1) 88%, rgba(0,0,0,0) 100%)",
+              }}
+            >
+              <TechMarquee
+                color="var(--neutral-1200)"
+                speed={10}
+                size={128}
+                iconSize={85}
+                gap={20}
+                direction="left"
+              />
+            </div>
           </div>
         </div>
       </section>

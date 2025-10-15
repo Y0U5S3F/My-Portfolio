@@ -107,7 +107,9 @@ const Projects: React.FC = () => {
   }, [index]);
 
   return (
-    <Box sx={{ minHeight: "70vh" }}>
+    <Box
+      id="projects"
+      sx={{ minHeight: "70vh" }}>
       {/* NAV - hidden on mobile (xs, sm). Visible from md and up */}
       <Box
         component="nav"

@@ -140,7 +140,7 @@ const Jumpark: React.FC = () => {
 
             <Typography variant="body1" sx={{ color: "var(--neutral-900)", lineHeight: 1.6, textAlign: "left", fontSize: { xs: 14, md: 18, lg: 22 }, py: 2 }}>
               JumparkHR is an HR management platform
-              designed specifically for Jumpark,a Tunisian indoor trampoline park.
+              designed specifically for Jumpark, a Tunisian indoor trampoline park.
               Built using Django and React, it delivers a seamless
               and efficient experience for managing
               HR tasks with precision and ease.

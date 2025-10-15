@@ -1,6 +1,5 @@
 // src/components/Navbar/MobileDrawer.tsx
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import {
   Drawer,
   Box,
@@ -10,16 +9,17 @@ import {
   ListItemText,
 } from "@mui/material";
 
-type NavLink = { name: string; path: string };
+type NavLink = { name: string; id: string }; // Change path to id
 
 interface MobileDrawerProps {
   open: boolean;
   onClose: () => void;
   navLinks: NavLink[];
-  isActive: (path: string) => boolean;
+  isActive: (id: string) => boolean;
+  onLinkClick: (id: string) => void; 
 }
 
-const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, isActive }) => {
+const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, isActive, onLinkClick }) => {
   // play controls when the menu-item animations run.
   // We only set it true after the Drawer/Slide has finished opening.
   const [play, setPlay] = useState(false);
@@ -74,11 +74,10 @@ const MobileDrawer: React.FC<MobileDrawerProps> = ({ open, onClose, navLinks, is
             return (
               <ListItem key={link.name} disablePadding>
                 <ListItemButton
-                  component={Link}
-                  to={link.path}
-                  onClick={onClose}
+                  component="button" // Change from Link to button
+                  onClick={() => onLinkClick(link.id)} // Change from onClose
                   disableRipple
-                  selected={isActive(link.path)}
+                  selected={isActive(link.id)} // Change from link.path to link.id
                   sx={{
                     width: "auto",                  // don't stretch full width
                     justifyContent: "center",       // center the content of the button

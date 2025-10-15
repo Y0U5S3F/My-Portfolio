@@ -4,6 +4,7 @@ import { Box, Button, Typography, Grid } from "@mui/material";
 const Hero: React.FC = () => {
   return (
     <Box
+      id="hero"
       sx={{
         height: "100vh",
         display: "flex",
