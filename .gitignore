@@ -1,0 +1,45 @@
+# Node modules
+node_modules/
+
+# Build output
+dist/
+
+# Vite cache
+.vite/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Optional: dotenv environment variables
+.env
+.env.*.local
+.env.local
+
+# macOS
+.DS_Store
+
+# IDEs and editors
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional: coverage reports
+coverage/
+
+# Optional: local development SSL keys
+*.pem
+
+# Optional: eslint cache
+.eslintcache
+
+# Optional: parcel cache
+.cache/
