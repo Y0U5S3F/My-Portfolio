@@ -11,7 +11,7 @@ type AboutMeShapeProps = {
 };
 
 function Model({ scale = 1, position = [0, 0, 0] }: Partial<AboutMeShapeProps>) {
-  const gltf = useGLTF("/3dModels/computer/scene.gltf") as any;
+  const gltf = useGLTF("/My-Portfolio/3dModels/computer/scene.gltf") as any;
   const meshRef = useRef<THREE.Group>(null);
 
   useFrame((state, delta) => {
@@ -67,6 +67,6 @@ const AboutMeShape: FC<AboutMeShapeProps> = memo(({
 
 AboutMeShape.displayName = "AboutMeShape";
 
-useGLTF.preload("/3dModels/computer/scene.gltf");
+useGLTF.preload("/My-Portfolio/3dModels/computer/scene.gltf");
 
 export default AboutMeShape;
